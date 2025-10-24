@@ -1,3 +1,4 @@
+```
 CS-122-POTION-MIXER-DELUXE/  
 │  
 ├── main.py                   # Entry point of the game  
@@ -32,3 +33,4 @@ CS-122-POTION-MIXER-DELUXE/
 │  
 ├── requirements.txt          # Dependencies (e.g. pygame)  
 └── README.md                 # Setup instructions, description  
+```
