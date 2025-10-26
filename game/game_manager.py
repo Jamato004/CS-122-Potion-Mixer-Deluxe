@@ -1,6 +1,7 @@
 import pygame
 import os
 from game.ui import Button
+from game.assets_loader import *
 
 class GameManager:
     def __init__(self, screen):
