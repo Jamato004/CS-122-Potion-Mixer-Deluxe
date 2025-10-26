@@ -1,0 +1,15 @@
+fonts/
+    https://fonts.google.com/specimen/MedievalSharp
+
+images/
+    ingredients/
+
+    potions/
+
+    ui/
+
+
+sounds/
+    backgorund.ogg - https://www.youtube.com/watch?v=nlBFyr8SDLU
+    success.wav - https://freesound.org/people/Kenneth_Cooney/sounds/779817/
+    mix.wav - https://freesound.org/people/Entagon/sounds/563727/

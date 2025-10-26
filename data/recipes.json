@@ -1,0 +1,4 @@
+[
+  { "ingredients": ["Eye of Newt", "Crystal Dust"], "result": "Mana Elixir" },
+  { "ingredients": ["Mandrake Root", "Eye of Newt"], "result": "Healing Tonic" }
+]
