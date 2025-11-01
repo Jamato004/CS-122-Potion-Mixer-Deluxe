@@ -17,6 +17,8 @@
 - added a test.png into `assets/images/ui`
     - used just to see how images work with buttons
 - changed `background.ogg` music to a smaller song
+- moved the "Selected:" text up so it won't be covered by the popup
+- moved the popup stuff into `ui.py`
 ## 10/26 Changes
 - WIP window for the game
 - added background music in `game_manager.py` using `background.ogg` 
