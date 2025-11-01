@@ -6,6 +6,17 @@
 - little to no changes are needed to `main.py` as it's used to load assets and run the game
 
 # Changelog
+## 10/31 Changes
+- Added mixing screen
+    - currently uses hardcoded ingredients
+    - I'm assuming that the stations in the excel file will be in every level
+    - might need to move the code for mixing to a new file so `game_manager.py` doesn't get too big as code for doing the levels needs to be added
+- changes in `ui.py`
+    - add `def draw_slot(...)` to help with the station ui
+    - add `image=None` to the `__init__` to render images
+- added a test.png into `assets/images/ui`
+    - used just to see how images work with buttons
+- changed `background.ogg` music to a smaller song
 ## 10/26 Changes
 - WIP window for the game
 - added background music in `game_manager.py` using `background.ogg` 
@@ -20,7 +31,7 @@
 ---
 
 # TODO
-- data (Data has a higher priority as it's needed for the game to function)
+- data (Adding the csvs from the excel)
     - ingredients.json list
     - recipes.json list
 - game logic
@@ -28,7 +39,7 @@
     - mixer.py
     - potion.py
     - ui.py
-- implementation
+- implementation (Missing: levels, sprites)
     - game_manager
     - main.py
 
