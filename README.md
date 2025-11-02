@@ -45,8 +45,7 @@
     - ingredient.py
     - mixer.py
     - potion.py
-    - ui.py
-- implementation (Missing: levels, sprites)
+- implementation (Missing: sprites, level select, options menu, win/lose screens)
     - game_manager
     - main.py
 
