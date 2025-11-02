@@ -1,0 +1,6 @@
+{
+  "level": 1,
+  "objective": "Brew a Healing Potion",
+  "ingredients": ["Herb", "Crystal", "Frog Eye"],
+  "stations": ["Mortar", "Calcinator", "Cauldron"]
+}

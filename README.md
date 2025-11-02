@@ -2,10 +2,15 @@
 - Game states are managed in `game_manager.py`
 - Add new screens or features by creating a new state (e.g., "results", "pause")
 - Ingredient and potion logic should go in their respective files under `game/`
+- Game logic to be implemented in `mixing_scene.py`
 - Any new data (recipes, ingredients) can be stored in `data/` as JSON
 - little to no changes are needed to `main.py` as it's used to load assets and run the game
 
 # Changelog
+## 11/1 Changes
+- added levels and temporary files to test levels
+- restructured `game_manager.py` so it will only be handling game states
+- moved the mixing scene logic from `game_manager.py` to a new file `mixing_scene.py`
 ## 10/31 Changes
 - Added mixing screen
     - currently uses hardcoded ingredients
@@ -75,6 +80,10 @@ CS-122-POTION-MIXER-DELUXE/
 │       └── MedievalSharp-Regular.ttf  
 │
 ├── data/  
+│   ├── levels/
+│   │   ├── level1.json
+│   │   ├── level2.json
+│   │   └── level3.json
 │   ├── ingredients.json      # Ingredient definitions (e.g. {"herb": {"color": "green"}})  
 │   └── recipes.json          # Potion recipes and results  
 │  

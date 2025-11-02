@@ -1,0 +1,6 @@
+{
+  "level": 2,
+  "objective": "Create a Poison Elixir",
+  "ingredients": ["Root", "Powder", "Essence"],
+  "stations": ["Retort", "Alembic", "Infuser"]
+}
