@@ -98,7 +98,7 @@ class Popup:
         hint_y = last_slot_bottom + 8
         draw_wrapped_text(
             self.screen,
-            "Select ingredient → click slot to place",
+            "Select ingredient -> click slot to place",
             self.rect.x + 12,
             hint_y,
             self.rect.w - 24,

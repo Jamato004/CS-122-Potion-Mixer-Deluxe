@@ -18,7 +18,7 @@ class GameManager:
         names = ["Herb", "Crystal", "Frog Eye", "Root", "Essence", "Powder"]
         self.ingredient_buttons = [
             Button(names[i], 60 + i * 150, 150, 130, 48, self.small_font)
-            for i in range(4)
+            for i in range(6)
         ]
         self.selected_ingredient = None
 
@@ -112,7 +112,13 @@ class GameManager:
 
     def open_station_popup(self, station_btn):
         name = station_btn.text
-        w, h = 320, 220
+        w = 320
+        slot_height = 38
+        gap = 10
+        top_margin = 40       # space for title
+        bottom_margin = 80    # space for hint + buttons
+        h = top_margin + self.max_slots * (slot_height + gap) + bottom_margin
+
         screen_w, screen_h = self.screen.get_size()
         x = station_btn.rect.centerx - w // 2
         y = station_btn.rect.top - h - 8

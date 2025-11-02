@@ -20,7 +20,7 @@ def load_sound(name, folder="sounds"):
 
 
 # ---------------- Music ----------------
-def load_music(name, folder="sounds", loop=-1, volume=0.2):
+def load_music(name, folder="sounds", loop=-1, volume=0.1):
     """Load and play background music. Loop=-1 for infinite loop."""
     path = os.path.join("assets", folder, name)
     if not os.path.exists(path):
