@@ -162,14 +162,16 @@ class MixingScene:
             print(f"No ingredients in {station_name}")
             return
 
+        # Game logic to be added here (mixer.py)
         result = f"Result_of_{station_name}_{'_'.join(ingredients)}"
         print(f"Mixed {ingredients} at {station_name} -> {result}")
         self.station_slots[station_name] = [None] * self.max_slots
         self.popup = None
 
-        # Simulate completing the level
-        print(f"Level {self.current_level} Complete!")
-        self.level_complete_flag = True
+        # Simulate completing the level (Change to check if the potion is correct)
+        if True:
+            print(f"Level {self.current_level} Complete!")
+            self.level_complete_flag = True
 
     # ---------------- Update ----------------
     def update(self):
