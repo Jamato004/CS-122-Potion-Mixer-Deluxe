@@ -1,6 +1,10 @@
 {
   "level": 3,
   "objective": "Craft a Mana Infusion",
-  "ingredients": ["Crystal", "Essence", "Frog Eye", "Root"],
+  "ingredients": [
+  {"name": "Herb", "category": "solid"},
+  {"name": "Crystal", "category": "essence"}
+]
+,
   "stations": ["Cauldron", "Magic Wand", "Infuser", "Alembic"]
 }

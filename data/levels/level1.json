@@ -1,6 +1,11 @@
 {
   "level": 1,
   "objective": "Brew a Healing Potion",
-  "ingredients": ["Herb", "Crystal", "Frog Eye"],
+  "ingredients": [
+  {"name": "Herb", "category": "solid"},
+  {"name": "Crystal", "category": "essence"},
+  {"name": "Juice", "category": "liquid"}
+]
+,
   "stations": ["Mortar", "Calcinator", "Cauldron"]
 }

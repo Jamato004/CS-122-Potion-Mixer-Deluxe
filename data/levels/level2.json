@@ -1,6 +1,10 @@
 {
   "level": 2,
   "objective": "Create a Poison Elixir",
-  "ingredients": ["Root", "Powder", "Essence"],
+  "ingredients": [
+  {"name": "Herb", "category": "solid"},
+  {"name": "Crystal", "category": "essence"}
+]
+,
   "stations": ["Retort", "Alembic", "Infuser"]
 }

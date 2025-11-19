@@ -7,6 +7,15 @@
 - little to no changes are needed to `main.py` as it's used to load assets and run the game
 
 # Changelog
+## 11/18 Changes
+- added ingredient type buttons that show ingredients of that type
+- added notification on level completion
+- changed stations to only accept applicable ingredients
+    - also notifies players if the ingredient is wrong and what SHOULD go in that slot
+- TODO
+    - ingredients are still loaded in order so theres still a max of 6 total ingredients
+    - ingredients should be loaded over the unloaded ingredients so total ingredients can reach 18, maybe 24 if we include a potions tab
+    - stations should have little labels in their input areas instead of just "empty"
 ## 11/1 Changes
 - added levels and temporary files to test levels
 - restructured `game_manager.py` so it will only be handling game states
