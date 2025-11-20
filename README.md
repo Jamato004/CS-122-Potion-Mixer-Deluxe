@@ -7,6 +7,12 @@
 - little to no changes are needed to `main.py` as it's used to load assets and run the game
 
 # Changelog
+## 11/19 Changes
+- stations now have the correct amomunt of slots
+- station slots have the ingredient type needed
+- stations will only mix once all the slots are filled
+- ingredients are not pre-loaded allowing them to load individually per type
+- moved code for notifactions to `ui.py`
 ## 11/18 Changes
 - added ingredient type buttons that show ingredients of that type
 - added notification on level completion

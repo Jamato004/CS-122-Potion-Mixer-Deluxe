@@ -2,8 +2,7 @@
 import pygame
 import os
 import json
-import time
-from game.ui import Button, Popup
+from game.ui import Button, Popup, Notification
 from game.assets_loader import load_font
 
 
@@ -21,6 +20,7 @@ class MixingScene:
         self.max_slots = 3
         self.popup = None
         self.selected_ingredient = None
+        self.ingredient_buttons = []
 
         # Level control
         self.current_level = 1
@@ -53,7 +53,7 @@ class MixingScene:
         }
 
         # temporary on-screen notification (message, until_time)
-        self.notification = ("", 0.0)
+        self.notification = Notification(self.small_font)
 
         # Load initial level
         self.load_level(self.current_level)
@@ -74,17 +74,21 @@ class MixingScene:
         self.selected_ingredient = None
         self.popup = None
 
-        # Ingredients and categories come from JSON level file now
-        # JSON expected format: "ingredients": [{"name": "Herb", "category": "solid"}, ...]
+        # Reset active tab so no ingredients show at start
+        self.active_tab = ""
+
+        # Clear ingredient buttons
+        self.ingredient_buttons = []
+
+        # Ingredients and categories come from JSON level file
         raw_ings = data.get("ingredients", [])
         ingredient_names = []
         self.ingredient_category = {}
-        for idx, ing in enumerate(raw_ings):
+        for ing in raw_ings:
             if isinstance(ing, dict):
                 name = ing.get("name")
                 cat = ing.get("category", "solid")
             else:
-                # backwards compatibility: string -> default solid
                 name = ing
                 cat = "solid"
             if not name:
@@ -92,45 +96,42 @@ class MixingScene:
             ingredient_names.append(name)
             self.ingredient_category[name] = cat
 
-        # Build ingredient buttons based on ingredient_names
-        # place according to active tab initially
-        self.ingredient_buttons = [
-            Button(name, 60 + i * 150, 150, 130, 48, self.small_font)
-            for i, name in enumerate(ingredient_names)
-        ]
-
-        # Stations loaded from level file (list of names)
-        station_names = data.get("stations", [])
+        # Stations
         start_x = 40
         spacing = 130
         y_pos = 480
         self.stations = [
             Button(name, start_x + i * spacing, y_pos, 120, 60, self.small_font)
-            for i, name in enumerate(station_names)
+            for i, name in enumerate(data.get("stations", []))
         ]
-        # initialize station slots dict
-        self.station_slots = {s.text: [None] * self.max_slots for s in self.stations}
+
+        # Initialize station slots dict with correct number of slots
+        self.station_slots = {}
+        for s in self.stations:
+            reqs = self.station_slot_requirements.get(s.text, [None] * self.max_slots)
+            used_slots = [None for r in reqs if r is not None]
+            self.station_slots[s.text] = used_slots
 
         print(f"Loaded Level {self.current_level}: {self.objective}")
 
-    # ---------------- Notifications ----------------
-    def set_notification(self, text, duration=1.6):
-        self.notification = (text, time.time() + duration)
+    # ---------------- Layout Ingredients ----------------
+    def layout_ingredient_buttons(self):
+        """Rebuild ingredient buttons based on the active tab."""
+        filtered = [name for name, cat in self.ingredient_category.items() if cat == self.active_tab]
+        self.ingredient_buttons = []
 
-    def draw_notification(self):
-        text, until = self.notification
-        if not text:
-            return
-        if time.time() > until:
-            self.notification = ("", 0.0)
-            return
-        surf = self.small_font.render(text, True, (255, 200, 100))
-        rect = surf.get_rect(center=(self.screen.get_width() // 2, 40))
-        # draw semi-transparent background
-        bg = pygame.Surface((rect.w + 12, rect.h + 8), pygame.SRCALPHA)
-        bg.fill((10, 10, 10, 180))
-        self.screen.blit(bg, (rect.x - 6, rect.y - 4))
-        self.screen.blit(surf, rect)
+        max_per_row = 6
+        row_height = 60
+        col_width = 150
+        start_x, start_y = 60, 160
+
+        for idx, name in enumerate(filtered):
+            row = idx // max_per_row
+            col = idx % max_per_row
+            x = start_x + col * col_width
+            y = start_y + row * row_height
+            self.ingredient_buttons.append(Button(name, x, y, 130, 48, self.small_font))
+
 
     # ---------------- Event Handling ----------------
     def handle_event(self, event):
@@ -143,6 +144,7 @@ class MixingScene:
             for i, tb in enumerate(self.tab_buttons):
                 if tb.is_clicked(event):
                     self.active_tab = self.tab_keys[i]
+                    self.layout_ingredient_buttons()
                     return
 
             # Ingredient selection: only show those in active tab visually, but selection allowed
@@ -215,7 +217,7 @@ class MixingScene:
                 else:
                     # place selected ingredient if present
                     if not self.selected_ingredient:
-                        self.set_notification("Select an ingredient first", 1.4)
+                        self.notification.set("Select an ingredient first", 1.4)
                         return
                     # get selected ingredient category
                     sel_cat = self.ingredient_category.get(self.selected_ingredient, None)
@@ -223,11 +225,11 @@ class MixingScene:
                         # special case: expected 'potion' allowed only if sel_cat == 'potion' (handle later)
                         if expected == "potion":
                             # block unless ingredient is labeled potion (most basic ingredients won't be)
-                            self.set_notification("This station needs a potion-like input", 1.6)
+                            self.notification.set("This station needs a potion-like input", 1.6)
                             return
                         if sel_cat != expected:
                             # block placement
-                            self.set_notification(f"Cannot place {sel_cat} in this slot (needs {expected})", 1.6)
+                            self.notification.set(f"Cannot place {sel_cat} in this slot (needs {expected})", 1.6)
                             return
                     # allowed: place
                     slots[i] = self.selected_ingredient
@@ -245,7 +247,11 @@ class MixingScene:
         gap = 10
         top_margin = 40
         bottom_margin = 80
-        h = top_margin + self.max_slots * (slot_height + gap) + bottom_margin
+
+        # Determine how many slots this station actually uses
+        slots = self.station_slots.get(name, [])
+        used_slots = len(slots)
+        h = top_margin + used_slots * (slot_height + gap) + bottom_margin
 
         # position above station, clamp to screen
         screen_w, screen_h = self.screen.get_size()
@@ -254,28 +260,38 @@ class MixingScene:
         x = max(8, min(x, screen_w - w - 8))
         y = max(80, min(y, screen_h - h - 8))
 
-        self.popup = Popup(self.screen, name, x, y, w, h, self.small_font, self.max_slots)
-        self.popup.slots = self.station_slots.get(name, [None]*self.max_slots).copy()
-        print(f"Opened popup for {name}")
+        # create popup with only the used slots
+        self.popup = Popup(self.screen, name, x, y, w, h, self.small_font, used_slots)
+        # copy the slots from station
+        self.popup.slots = slots.copy()
+        # expected types for display
+        reqs = self.station_slot_requirements.get(name, [None] * used_slots)
+        self.popup.expected_types = [r for r in reqs if r is not None]
+
+        print(f"Opened popup for {name} with {used_slots} slots")
+
 
     # ---------------- Mixing ----------------
     def mix_station(self, station_name):
         slots = self.station_slots[station_name]
-        ingredients = [s for s in slots if s]
-        if not ingredients:
-            self.set_notification("No ingredients to mix", 1.4)
+
+        # Check if all slots are filled
+        if any(s is None for s in slots):
+            self.notification.set("Fill all slots before mixing!", 1.6)
             return
 
-        # Here we'd consult the station's CSV-based recipe lookup.
-        # For now simulate result and mark level complete.
+        # All slots filled, proceed to mix
+        ingredients = slots.copy()
         result = f"Result_of_{station_name}_" + "_".join(ingredients)
         print(f"Mixed {ingredients} at {station_name} -> {result}")
-        self.station_slots[station_name] = [None] * self.max_slots
+
+        # Clear only the used slots
+        self.station_slots[station_name] = [None] * len(slots)
         self.popup = None
 
-        # Simulate completing the level for testing
+        # Mark level complete for testing
         self.level_complete_flag = True
-        self.set_notification(f"Level {self.current_level} complete!", 2.0)
+        self.notification.set(f"Level {self.current_level} complete!", 2.0)
 
     # ---------------- Update ----------------
     def update(self):
@@ -300,9 +316,6 @@ class MixingScene:
 
         # Ingredients: only draw those matching active tab
         for b in self.ingredient_buttons:
-            cat = self.ingredient_category.get(b.text, "solid")
-            if cat != self.active_tab:
-                continue
             if self.selected_ingredient == b.text:
                 pygame.draw.rect(self.screen, (255, 215, 0), b.rect.inflate(6, 6), border_radius=8)
             b.draw(self.screen)
@@ -325,4 +338,4 @@ class MixingScene:
             self.next_level_button.draw(self.screen)
 
         # Notification
-        self.draw_notification()
+        self.notification.draw(self.screen)

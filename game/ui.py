@@ -1,4 +1,5 @@
 import pygame
+import time
 
 class Button:
     def __init__(self, text, x, y, width, height, font,
@@ -86,10 +87,19 @@ class Popup:
         title = self.font.render(f"{self.station_name}", True, (255, 255, 255))
         self.screen.blit(title, (self.rect.x + 12, self.rect.y + 8))
 
+        # Draw slots
         for i, slot_rect in enumerate(self.slot_rects()):
-            draw_slot(self.screen, slot_rect.x, slot_rect.y, slot_rect.w, slot_rect.h,
-                      self.font, content=self.slots[i])
+            # Determine content to display: ingredient name if present, else expected type
+            content = self.slots[i]
+            if content is None:
+                # Get expected type from MixingScene.station_slot_requirements
+                # We temporarily attach the requirements dict to Popup when opening
+                expected = getattr(self, "expected_types", [None]*self.max_slots)[i]
+                content = expected.capitalize() if expected else "Empty"
 
+            draw_slot(self.screen, slot_rect.x, slot_rect.y, slot_rect.w, slot_rect.h,
+                    self.font, content=content)
+        
         self.mix_btn.draw(self.screen)
         self.close_btn.draw(self.screen)
 
@@ -106,6 +116,7 @@ class Popup:
             (180, 180, 180)
         )
 
+
     def slot_rects(self):
         x = self.rect.x + 12
         y = self.rect.y + 40
@@ -113,3 +124,29 @@ class Popup:
         h = 38
         gap = 10
         return [pygame.Rect(x, y + i * (h + gap), w, h) for i in range(self.max_slots)]
+
+class Notification:
+    """Handles timed on-screen notifications."""
+    def __init__(self, font):
+        self.font = font
+        self.message = ""
+        self.until = 0.0
+
+    def set(self, text, duration=1.6):
+        self.message = text
+        self.until = time.time() + duration
+
+    def draw(self, screen):
+        if not self.message or time.time() > self.until:
+            self.message = ""
+            self.until = 0.0
+            return
+
+        surf = self.font.render(self.message, True, (255, 200, 100))
+        rect = surf.get_rect(center=(screen.get_width() // 2, 40))
+
+        # draw semi-transparent background
+        bg = pygame.Surface((rect.w + 12, rect.h + 8), pygame.SRCALPHA)
+        bg.fill((10, 10, 10, 180))
+        screen.blit(bg, (rect.x - 6, rect.y - 4))
+        screen.blit(surf, rect)
