@@ -3,7 +3,7 @@ import pygame
 import os
 import json
 from game.ui import Button, Popup, Notification
-from game.assets_loader import load_font
+from game.assets_loader import load_font, load_sound
 
 
 class MixingScene:
@@ -11,6 +11,13 @@ class MixingScene:
         self.screen = screen
         self.font = load_font(size=48)
         self.small_font = small_font
+
+        # Sound effects
+        self.sfx_click = load_sound("click.wav")
+        self.sfx_error = load_sound("error.wav")
+        self.sfx_mix = load_sound("mix.wav")
+        self.sfx_success = load_sound("success.wav")
+
 
         # categories: mapping ingredient_name -> category
         # this is filled per-level from JSON but default fallback provided
@@ -218,6 +225,7 @@ class MixingScene:
                     # place selected ingredient if present
                     if not self.selected_ingredient:
                         self.notification.set("Select an ingredient first", 1.4)
+                        self.sfx_error.play()
                         return
                     # get selected ingredient category
                     sel_cat = self.ingredient_category.get(self.selected_ingredient, None)
@@ -226,10 +234,12 @@ class MixingScene:
                         if expected == "potion":
                             # block unless ingredient is labeled potion (most basic ingredients won't be)
                             self.notification.set("This station needs a potion-like input", 1.6)
+                            self.sfx_error.play()
                             return
                         if sel_cat != expected:
                             # block placement
                             self.notification.set(f"Cannot place {sel_cat} in this slot (needs {expected})", 1.6)
+                            self.sfx_error.play()
                             return
                     # allowed: place
                     slots[i] = self.selected_ingredient
@@ -278,18 +288,21 @@ class MixingScene:
         # Check if all slots are filled
         if any(s is None for s in slots):
             self.notification.set("Fill all slots before mixing!", 1.6)
+            self.sfx_error.play()
             return
 
         # All slots filled, proceed to mix
         ingredients = slots.copy()
         result = f"Result_of_{station_name}_" + "_".join(ingredients)
         print(f"Mixed {ingredients} at {station_name} -> {result}")
+        self.sfx_mix.play()
 
         # Clear only the used slots
         self.station_slots[station_name] = [None] * len(slots)
         self.popup = None
 
         # Mark level complete for testing
+        self.sfx_success.play()
         self.level_complete_flag = True
         self.notification.set(f"Level {self.current_level} complete!", 2.0)
 
