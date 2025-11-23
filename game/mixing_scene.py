@@ -4,6 +4,7 @@ import os
 import json
 from game.ui import Button, Popup, Notification
 from game.assets_loader import load_font, load_sound
+from game.PotionMixerCommand import Inventory, Mixing
 
 
 class MixingScene:
@@ -284,6 +285,7 @@ class MixingScene:
     # ---------------- Mixing ----------------
     def mix_station(self, station_name):
         slots = self.station_slots[station_name]
+        
 
         # Check if all slots are filled
         if any(s is None for s in slots):
@@ -293,8 +295,9 @@ class MixingScene:
 
         # All slots filled, proceed to mix
         ingredients = slots.copy()
-        result = f"Result_of_{station_name}_" + "_".join(ingredients)
-        print(f"Mixed {ingredients} at {station_name} -> {result}")
+        # result = f"Result_of_{station_name}_" + "_".join(ingredients)
+        # print(f"Mixed {ingredients} at {station_name} -> {result}")
+        result = self.Mixing().call_station(station_name, self.inventory, ingredients)
         self.sfx_mix.play()
 
         # Clear only the used slots

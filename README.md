@@ -1,3 +1,11 @@
+# Install instruction
+1. Download and extract the zip
+2. Install dependencies
+```
+pip install requirements.txt
+```
+3. run `main.py`
+
 # Developer Notes
 - Game states are managed in `game_manager.py`
 - Add new screens or features by creating a new state (e.g., "results", "pause")
