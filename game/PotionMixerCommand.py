@@ -9,14 +9,15 @@ class Inventory:
         self.potions = {}
     def add_to_inventory(self, ingredient, kind, number):
         presence = False
-        if i in self.kind.keys():
-            self.kind[i] += number
+        if ingredient in self.kind.keys():
+            self.kind[ingredient] += number
             presence = True
         if presence = False:
-            self.kind[i] = number
+            self.kind[ingredient] = number
     def remove_from_inventory(self, ingredient, kind, number):
-        if i in self.kind.keys():
-            self.kind[i] -= number
+        if ingredient in self.kind.keys():
+            if self.kind[ingredient] >= number:
+                self.kind[ingredient] -= number
     def check_inventory(self, ingredient, kind):
         if ingredient in self.kind.keys() and self.kind[ingredient] >= 1:
             return True
@@ -148,3 +149,4 @@ def Cauldron(inventory, liquid, solid, essence):
             return f"This looks more like a soup than a potion..."
 
         
+
