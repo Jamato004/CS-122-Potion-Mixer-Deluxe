@@ -13,7 +13,7 @@ class LevelSelectScene:
         self.level_buttons = []
         self.back_button = Button("Back", 20, 20, 120, 40, small_font)
 
-        self.stats_path = os.path.join("data", "levels", "level_stats.json")
+        self.stats_path = os.path.join("data", "level_stats.json")
         self.stats = self._load_stats()
 
         # Load all level files

@@ -21,6 +21,7 @@ pip install requirements.txt
     - moved level loading to a different file `mixing_level.py`
     - moved popup handling to a different file `mixing_popup.py`
 - delete `tests/`, `mixer.py`, `potion.py`, `ingredient.py` as they were unused
+- moved `level_stats.json` out of `levels/` as it was causing it to show up in level select
 ## 11/23 Changes
 - game logic added `PotionMixerCommand.py`
 - tweaked levels
