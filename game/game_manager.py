@@ -2,6 +2,7 @@ import pygame
 from game.ui import Button
 from game.assets_loader import load_font, load_music
 from game.mixing_scene import MixingScene
+from game.level_select_scene import LevelSelectScene
 
 
 class GameManager:
@@ -18,10 +19,31 @@ class GameManager:
         self.back_button = Button("Back to Menu", 20, 20, 200, 50, self.small_font)
 
         # Scenes
+        # Scenes
         self.mixing_scene = MixingScene(screen, self.small_font)
+        self.level_select_scene = LevelSelectScene(screen, self.small_font)
+
 
         # Load music
         load_music("background.ogg")
+
+    # Level Helper
+    def start_level(self, level_number):
+        self.mixing_scene.load_level(level_number)
+        self.mixing_scene.retry_count = 0  # reset retries
+        self.state = "mixing"
+    def _check_objective(self):
+        """If target_potion is owned, mark level complete and celebrate once."""
+        if not self.target_potion:
+            return
+        have = self.inventory.potions.get(self.target_potion, 0)
+        if have > 0 and not self.level_complete_flag:
+            self.level_complete_flag = True
+            self.sfx_success.play()
+            self.notification.set(f"Level complete! Brewed {self.target_potion}!", 2.5)
+
+        
+
 
     # ---------------- Event Handling ----------------
     def handle_event(self, event):
@@ -30,14 +52,23 @@ class GameManager:
 
         if self.state == "menu":
             if self.start_button.is_clicked(event):
-                self.state = "mixing"
+                self.state = "level_select"
+            return
+
+        elif self.state == "level_select":
+            self.level_select_scene.handle_event(event, self)
             return
 
         elif self.state == "mixing":
             self.mixing_scene.handle_event(event)
             if self.back_button.is_clicked(event):
-                self.state = "menu"
+                # update best retry before returning
+                lvl = self.mixing_scene.current_level
+                retries = self.mixing_scene.retry_count
+                self.level_select_scene.update_best_retry(lvl, retries)
+                self.state = "level_select"
             return
+
 
     # ---------------- Update ----------------
     def update(self):
@@ -52,6 +83,9 @@ class GameManager:
             title = self.font.render("Potion Mixer Deluxe", True, (255, 255, 255))
             self.screen.blit(title, (250, 200))
             self.start_button.draw(self.screen)
+
+        elif self.state == "level_select":
+            self.level_select_scene.draw()
 
         elif self.state == "mixing":
             self.mixing_scene.draw()

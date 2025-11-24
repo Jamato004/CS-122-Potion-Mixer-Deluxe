@@ -1,10 +1,11 @@
 {
   "level": 1,
   "objective": "Brew a Healing Potion",
+  "target_potion": "Healing Potion",
   "ingredients": [
-  {"name": "Herb", "category": "solid"},
-  {"name": "Crystal", "category": "essence"},
-  {"name": "Juice", "category": "liquid"}
+  {"name": "Herb", "category": "solid", "count": 2},
+  {"name": "Crystal", "category": "essence", "count": 3},
+  {"name": "Juice", "category": "liquid", "count": 3}
 ]
 ,
   "stations": ["Mortar", "Calcinator", "Cauldron"]

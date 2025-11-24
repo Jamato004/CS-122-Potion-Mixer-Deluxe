@@ -15,6 +15,16 @@ pip install requirements.txt
 - little to no changes are needed to `main.py` as it's used to load assets and run the game
 
 # Changelog
+## 11/23 Changes
+- game logic added `PotionMixerCommand.py`
+- tweaked levels
+    - removed the stations
+    - added a counter for ingredients
+    - added the potion requirement to finish level
+- added a retry counter and button
+- added logic for level completion
+- added counters for ingredients
+- added level select screen
 ## 11/19 Changes
 - stations now have the correct amomunt of slots
 - station slots have the ingredient type needed
