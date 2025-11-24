@@ -5,6 +5,8 @@ from collections import Counter
 from game.ui import Button, Popup, Notification
 from game.assets_loader import load_font, load_sound
 from game.PotionMixerCommand import Inventory, Mixing, ReservedInventoryView
+from game.mixing_level import load_level_data, build_inventory_from_level
+from game.mixing_popup import open_station_popup, handle_popup_event
 
 
 class MixingScene:
@@ -93,61 +95,27 @@ class MixingScene:
 
     # ---------------- Load Level ----------------
     def load_level(self, level_number):
-        self.inventory = Inventory()           # clears all items
-        self.ingredient_category = {}          # forgets old categories
-        self.ingredient_buttons = []           # clears buttons
+        # reset per-level state
+        self.inventory = Inventory()
+        self.ingredient_category = {}
+        self.ingredient_buttons = []
         self.selected_ingredient = None
         self.popup = None
         self.level_complete_flag = False
         self.active_tab = ""
-        level_path = os.path.join("data", "levels", f"level{level_number}.json")
-        if not os.path.exists(level_path):
-            print(f"Level file not found: {level_path}")
-            return
 
-        with open(level_path, "r") as f:
-            data = json.load(f)
+        data = load_level_data(level_number)
+        if data is None:
+            return
 
         self.current_level = data.get("level", level_number)
         self.objective = data.get("objective", "Unknown objective")
-        self.level_complete_flag = False
-        self.selected_ingredient = None
-        self.popup = None
         self.target_potion = data.get("target_potion") or data.get("objective_potion")
 
-        # Reset active tab so no ingredients show at start
-        self.active_tab = ""
+        # build inventory + categories via helper
+        self.inventory, self.ingredient_category = build_inventory_from_level(data)
 
-        # Clear ingredient buttons
-        self.ingredient_buttons = []
-
-        # Ingredients and categories come from JSON level file
-        raw_ings = data.get("ingredients", [])
-        self.ingredient_category = {}
-        self._check_objective()
-
-        # Fill inventory from JSON; supports either strings or dicts like {name, category, count}
-        def to_kind(cat: str) -> str:
-            return {
-                "liquid": "fluids",
-                "solid": "solids",
-                "essence": "essences",
-                "potion": "potions",
-            }.get(cat, "solids")
-
-        for ing in raw_ings:
-            if isinstance(ing, dict):
-                name = ing.get("name")
-                cat = ing.get("category", "solid")
-                count = int(ing.get("count", 1))
-            else:
-                name = str(ing); cat = "solid"; count = 1
-            if not name: continue
-            self.ingredient_category[name] = cat
-            self.inventory.add_to_inventory(name, self._kind_for(cat), count)
-
-
-        # Stations
+        # stations always the same
         start_x = 40
         spacing = 130
         y_pos = 480
@@ -160,12 +128,10 @@ class MixingScene:
             for i, name in enumerate(all_station_names)
         ]
 
-        # Initialize station slots dict with correct number of used slots
         self.station_slots = {}
         for s in self.stations:
             reqs = self.station_slot_requirements.get(s.text, [])
-            used_slots = [None for _ in reqs]
-            self.station_slots[s.text] = used_slots
+            self.station_slots[s.text] = [None for _ in reqs]
 
         print(f"Loaded Level {self.current_level}: {self.objective}")
         self.layout_ingredient_buttons()
@@ -264,93 +230,11 @@ class MixingScene:
 
     # ---------------- Popup Handling ----------------
     def _handle_popup_event(self, event):
-        if event.type != pygame.MOUSEBUTTONDOWN or not hasattr(event, "pos"):
-            return
-
-        # Close
-        if self.popup.close_btn.is_clicked(event):
-            self.popup = None
-            return
-
-        # Mix
-        if self.popup.mix_btn.is_clicked(event):
-            self.mix_station(self.popup.station_name)
-            return
-
-        # Slot clicks
-        pos = event.pos
-        for i, slot_rect in enumerate(self.popup.slot_rects()):
-            if not slot_rect.collidepoint(pos):
-                continue
-            station = self.popup.station_name
-            reqs = self.station_slot_requirements.get(station, [])
-            expected = reqs[i] if i < len(reqs) else None
-            slots = self.station_slots[station]
-
-            if slots[i]:
-                # remove from slot -> give back to inventory
-                name = slots[i]
-                cat = self.ingredient_category.get(name, expected or "solid")
-                self.inventory.add_to_inventory(name, self._kind_for(cat), 1)
-                slots[i] = None
-                self.popup.slots = slots
-                self.layout_ingredient_buttons()
-                self.sfx_click.play()
-                continue
-
-            # place selected ingredient
-            if not self.selected_ingredient:
-                self.notification.set("Select an ingredient first", 1.4)
-                self.sfx_error.play()
-                return
-
-            sel_name = self.selected_ingredient
-            sel_cat = self.ingredient_category.get(sel_name, None)
-            if expected and expected != sel_cat:
-                self.notification.set(f"Needs {expected}", 1.4)
-                self.sfx_error.play()
-                return
-
-            kind = self._kind_for(sel_cat or expected or "solid")
-            if not self.inventory.check_inventory(sel_name, kind):
-                self.notification.set("Out of stock", 1.2)
-                self.sfx_error.play()
-                return
-
-            # consume and place
-            self.inventory.remove_from_inventory(sel_name, kind, 1)
-            slots[i] = sel_name
-            self.popup.slots = slots
-            self.selected_ingredient = None
-            self.layout_ingredient_buttons()
-            self.sfx_click.play()
-            return
+        handle_popup_event(self, event)
 
     # ---------------- Popup Creation ----------------
     def open_station_popup(self, station_btn):
-        name = station_btn.text
-        w = 320
-        slot_height = 38
-        gap = 10
-        top_margin = 40
-        bottom_margin = 80
-
-        slots = self.station_slots.get(name, [])
-        used_slots = len(slots)
-        h = top_margin + used_slots * (slot_height + gap) + bottom_margin
-
-        screen_w, screen_h = self.screen.get_size()
-        x = station_btn.rect.centerx - w // 2
-        y = station_btn.rect.top - h - 8
-        x = max(8, min(x, screen_w - w - 8))
-        y = max(80, min(y, screen_h - h - 8))
-
-        self.popup = Popup(self.screen, name, x, y, w, h, self.small_font, used_slots)
-        self.popup.slots = slots.copy()
-        reqs = self.station_slot_requirements.get(name, [None] * used_slots)
-        self.popup.expected_types = reqs[:used_slots]
-
-        print(f"Opened popup for {name} with {used_slots} slots")
+        open_station_popup(self, station_btn)
 
     # ---------------- Mixing ----------------
     def mix_station(self, station_name):

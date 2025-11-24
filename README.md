@@ -15,6 +15,12 @@ pip install requirements.txt
 - little to no changes are needed to `main.py` as it's used to load assets and run the game
 
 # Changelog
+## 11/24 Changes
+- updated csvs
+- cleaned `mixing_scene.py` to be shorter
+    - moved level loading to a different file `mixing_level.py`
+    - moved popup handling to a different file `mixing_popup.py`
+- delete `tests/`, `mixer.py`, `potion.py`, `ingredient.py` as they were unused
 ## 11/23 Changes
 - game logic added `PotionMixerCommand.py`
 - tweaked levels
