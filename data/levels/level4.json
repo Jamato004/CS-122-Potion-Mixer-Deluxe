@@ -1,0 +1,11 @@
+{
+  "level": 4,
+  "objective": "Craft a Potion of Healing",
+  "target_potion": "Potion of Healing",
+  "ingredients": [
+  {"name": "Golden Peony", "category": "solid", "count": 5},
+  {"name": "Angel Hair", "category": "solid", "count": 3},
+  {"name": "Water", "category": "liquid", "count": 5},
+  {"name": "Golem Heart", "category": "solid", "count": 3}
+]
+}

@@ -1,10 +1,11 @@
 {
   "level": 3,
-  "objective": "Craft a Mana Infusion",
+  "objective": "Craft a Potion of Steelskin",
+  "target_potion": "Potion of Steelskin",
   "ingredients": [
-  {"name": "Herb", "category": "solid"},
-  {"name": "Crystal", "category": "essence"}
+  {"name": "Golem Heart", "category": "solid", "count": 5},
+  {"name": "Water", "category": "liquid", "count": 5},
+  {"name": "Golden Peony", "category": "solid", "count": 3},
+  {"name": "Copper Dust", "category": "solid", "count": 3}
 ]
-,
-  "stations": ["Cauldron", "Magic Wand", "Infuser", "Alembic"]
 }

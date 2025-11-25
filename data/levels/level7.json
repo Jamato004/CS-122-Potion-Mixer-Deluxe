@@ -1,0 +1,12 @@
+{
+  "level": 7,
+  "objective": "Craft a Potion of Esoterica",
+  "target_potion": "Potion of Esoterica",
+  "ingredients": [
+  {"name": "", "category": "", "count": 5},
+  {"name": "", "category": "", "count": 3},
+  {"name": "", "category": "", "count": 5},
+  {"name": "", "category": "", "count": 2},
+  {"name": "", "category": "", "count": 3}
+]
+}

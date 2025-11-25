@@ -1,10 +1,10 @@
 {
   "level": 2,
-  "objective": "Create a Poison Elixir",
+  "objective": "Make a Potion of Waterbreathing",
+  "target_potion": "Potion of Waterbreathing",
   "ingredients": [
-  {"name": "Herb", "category": "solid"},
-  {"name": "Crystal", "category": "essence"}
+  {"name": "Water", "category": "liquid", "count": 3},
+  {"name": "Golem Heart", "category": "solid", "count": 5},
+  {"name": "Black Pearl", "category": "solid", "count": 5}
 ]
-,
-  "stations": ["Retort", "Alembic", "Infuser"]
 }

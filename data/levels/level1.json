@@ -1,12 +1,13 @@
 {
   "level": 1,
-  "objective": "Brew a Healing Potion",
-  "target_potion": "Healing Potion",
+  "objective": "Brew a Potion of Might",
+  "target_potion": "Potion of Might",
   "ingredients": [
-  {"name": "Herb", "category": "solid", "count": 2},
-  {"name": "Crystal", "category": "essence", "count": 3},
-  {"name": "Juice", "category": "liquid", "count": 3}
+  {"name": "Dragon Scale", "category": "solid", "count": 5},
+  {"name": "Ethanol", "category": "liquid", "count": 3},
+  {"name": "Manticore Honey", "category": "solid", "count": 5},
+  {"name": "Essence of Destruction", "category": "essence", "count": 2},
+  {"name": "Potion of Might", "category": "potion", "count": 5}
+
 ]
-,
-  "stations": ["Mortar", "Calcinator", "Cauldron"]
 }

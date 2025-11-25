@@ -15,6 +15,16 @@ pip install requirements.txt
 - little to no changes are needed to `main.py` as it's used to load assets and run the game
 
 # Changelog
+## 11/25 Changes
+- levels are now being developed
+    - 7 levels total
+    - 6 completed
+- Bugs to be fixed
+    - stations do give an output and shows up in inventory, but that ingredient has no category
+    - names of ingredients are long and need to be wrapped
+    - names of potions can be shortened removing "Potion of"
+    - names of essences can be shortened removing "Essence of"
+    - `level_stats.json` can be looked at further as it's kinda weird with how it updates. Also maybe have save files?
 ## 11/24 Changes
 - updated csvs
 - cleaned `mixing_scene.py` to be shorter
