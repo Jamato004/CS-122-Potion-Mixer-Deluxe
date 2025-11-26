@@ -1,15 +1,6 @@
 import os
 import pygame
 
-# ---------------- Images ----------------
-def load_image(name, folder="images"):
-    """Load an image from assets and return a Surface with alpha."""
-    path = os.path.join("assets", folder, name)
-    if not os.path.exists(path):
-        raise FileNotFoundError(f"Image not found: {path}")
-    return pygame.image.load(path).convert_alpha()
-
-
 # ---------------- Sounds ----------------
 def load_sound(name, folder="sounds"):
     """Load a short sound effect from assets and return a Sound object."""

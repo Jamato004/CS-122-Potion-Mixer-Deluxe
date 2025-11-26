@@ -1,13 +1,6 @@
 fonts/
     https://fonts.google.com/specimen/MedievalSharp
 
-images/
-    ingredients/
-
-    potions/
-
-    ui/
-
 
 sounds/
     backgorund.ogg - https://youtu.be/cJyPtpldb78?si=HzPvjb1kS575Bcln
