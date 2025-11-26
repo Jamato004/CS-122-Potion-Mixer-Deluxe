@@ -16,7 +16,7 @@ pip install requirements.txt
 
 # Changelog
 ## 11/26 Changes
-- fixed all bugs mentioned in 11/15
+- fixed all bugs mentioned in 11/25
 - `level_stats.json` is now updating once level completion.
 - want to lock levels so you must complete the previous level
 ## 11/25 Changes
