@@ -13,7 +13,8 @@ class LevelSelectScene:
         self.level_buttons = []
         self.back_button = Button("Back", 20, 20, 120, 40, small_font)
 
-        self.stats_path = os.path.join("data", "level_stats.json")
+        # put stats next to level JSONs
+        self.stats_path = os.path.join(self.levels_path, "level_stats.json")
         self.stats = self._load_stats()
 
         # Load all level files
@@ -26,8 +27,18 @@ class LevelSelectScene:
     def _load_stats(self):
         if os.path.exists(self.stats_path):
             with open(self.stats_path, "r") as f:
-                return json.load(f)
-        return {}
+                data = json.load(f)
+            # make sure it has the expected structure
+            if not isinstance(data, dict):
+                data = {}
+            if "levels" not in data:
+                levels = {}
+                for k, v in data.items():
+                    levels[str(k)] = {"best_retries": v}
+                data = {"levels": levels}
+            return data
+        # default structure
+        return {"levels": {}}
 
     def _save_stats(self):
         os.makedirs(os.path.dirname(self.stats_path), exist_ok=True)
@@ -35,11 +46,19 @@ class LevelSelectScene:
             json.dump(self.stats, f, indent=2)
 
     def update_best_retry(self, level_num, retry_count):
-        level_key = str(level_num)
-        best = self.stats.get(level_key, None)
+        """Record best (lowest) retry count for a level."""
+        key = str(level_num)
+        level_info = self.stats["levels"].get(key, {})
+        best = level_info.get("best_retries")
         if best is None or retry_count < best:
-            self.stats[level_key] = retry_count
+            level_info["best_retries"] = retry_count
+            self.stats["levels"][key] = level_info
             self._save_stats()
+            self._create_buttons()  # refresh labels
+
+    # allow GameManager to manually refresh after other changes if needed
+    def refresh(self):
+        self._create_buttons()
 
     # --- UI ---
     def _create_buttons(self):
@@ -51,9 +70,14 @@ class LevelSelectScene:
         for idx, filename in enumerate(self.level_files):
             level_num = int("".join([c for c in filename if c.isdigit()]) or 0)
             label = f"Level {level_num}"
-            best = self.stats.get(str(level_num))
+
+            key = str(level_num)
+            level_info = self.stats["levels"].get(key, {})
+            best = level_info.get("best_retries")
+
             if best is not None:
                 label += f" (Best {best})"
+
             row = idx // per_row
             col = idx % per_row
             x = start_x + col * col_width

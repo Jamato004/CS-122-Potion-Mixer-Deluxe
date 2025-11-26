@@ -5,6 +5,7 @@
   "ingredients": [
   {"name": "Water", "category": "liquid", "count": 3},
   {"name": "Golem Heart", "category": "solid", "count": 5},
-  {"name": "Black Pearl", "category": "solid", "count": 5}
+  {"name": "Black Pearl", "category": "solid", "count": 5},
+  {"name": "Potion of Waterbreathing", "category": "potion", "count": 5}
 ]
 }

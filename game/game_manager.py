@@ -32,15 +32,6 @@ class GameManager:
         self.mixing_scene.load_level(level_number)
         self.mixing_scene.retry_count = 0  # reset retries
         self.state = "mixing"
-    def _check_objective(self):
-        """If target_potion is owned, mark level complete and celebrate once."""
-        if not self.target_potion:
-            return
-        have = self.inventory.potions.get(self.target_potion, 0)
-        if have > 0 and not self.level_complete_flag:
-            self.level_complete_flag = True
-            self.sfx_success.play()
-            self.notification.set(f"Level complete! Brewed {self.target_potion}!", 2.5)
 
         
 
@@ -62,12 +53,14 @@ class GameManager:
         elif self.state == "mixing":
             self.mixing_scene.handle_event(event)
             if self.back_button.is_clicked(event):
-                # update best retry before returning
-                lvl = self.mixing_scene.current_level
-                retries = self.mixing_scene.retry_count
-                self.level_select_scene.update_best_retry(lvl, retries)
+                # Only save if the level was actually completed
+                if self.mixing_scene.level_complete_flag:
+                    lvl = self.mixing_scene.current_level
+                    retries = self.mixing_scene.retry_count
+                    self.level_select_scene.update_best_retry(lvl, retries)
                 self.state = "level_select"
             return
+
 
 
     # ---------------- Update ----------------

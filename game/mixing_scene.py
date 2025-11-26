@@ -155,6 +155,11 @@ class MixingScene:
         kind = key_to_kind[key]
         items = self.inventory.get_items(kind)
 
+        tab_cat = key  # "solid", "liquid", "essence", "potion"
+        for nm, _ct in items:
+            if nm not in self.ingredient_category:
+                self.ingredient_category[nm] = tab_cat
+
         max_per_row = 6
         row_height = 60
         col_width = 150
@@ -165,10 +170,24 @@ class MixingScene:
             col = idx % max_per_row
             x = start_x + col * col_width
             y = start_y + row * row_height
-            label = f"{name} x{count}"
+
+            display = name
+            if kind == "potions":
+                for prefix in ("Potion of ", "Potion "):
+                    if display.startswith(prefix):
+                        display = display[len(prefix):]
+                        break
+            elif kind == "essences":
+                for prefix in ("Essence of ", "Essence "):
+                    if display.startswith(prefix):
+                        display = display[len(prefix):]
+                        break
+
+            label = f"{display} x{count}"
             btn = Button(label, x, y, 130, 48, self.small_font)
-            btn.meta_name = name           # <-- store the real name
+            btn.meta_name = name  # keep full internal name here
             self.ingredient_buttons.append(btn)
+
 
     # Utility: map category to inventory kind
     @staticmethod

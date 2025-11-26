@@ -1,0 +1,10 @@
+{
+  "levels": {
+    "1": {
+      "best_retries": 1
+    },
+    "2": {
+      "best_retries": 7
+    }
+  }
+}

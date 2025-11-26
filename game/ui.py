@@ -24,9 +24,32 @@ class Button:
         else:
             current_color = self.hover_color if hovered else self.color
             pygame.draw.rect(screen, current_color, self.rect, border_radius=10)
-        text_surface = self.font.render(self.text, True, (0, 0, 0))
-        text_rect = text_surface.get_rect(center=self.rect.center)
-        screen.blit(text_surface, text_rect)
+
+        # --- wrapped text ---
+        max_width = self.rect.w - 10
+        words = self.text.split()
+        lines = []
+        line = ""
+        for w in words:
+            test = (line + " " + w).strip()
+            if self.font.size(test)[0] <= max_width:
+                line = test
+            else:
+                if line:
+                    lines.append(line)
+                line = w
+        if line:
+            lines.append(line)
+
+        total_height = len(lines) * self.font.get_height()
+        start_y = self.rect.centery - total_height // 2
+
+        for i, ln in enumerate(lines):
+            text_surface = self.font.render(ln, True, (0, 0, 0))
+            text_rect = text_surface.get_rect(center=(self.rect.centerx,
+                                                      start_y + i * self.font.get_height()))
+            screen.blit(text_surface, text_rect)
+
 
     def is_clicked(self, event):
         return event.type == pygame.MOUSEBUTTONDOWN and self.rect.collidepoint(event.pos)
@@ -38,13 +61,20 @@ def draw_slot(screen, x, y, w, h, font, content=None, highlight=False):
     pygame.draw.rect(screen, bg, rect, border_radius=6)
     pygame.draw.rect(screen, (200, 200, 200), rect, 2, border_radius=6)
     if content:
-        txt = font.render(content, True, (255, 255, 255))
-        txt_rect = txt.get_rect(center=rect.center)
-        screen.blit(txt, txt_rect)
+        max_width = w - 8
+        if font.size(content)[0] <= max_width:
+            # single line, centered
+            txt = font.render(content, True, (255, 255, 255))
+            txt_rect = txt.get_rect(center=rect.center)
+            screen.blit(txt, txt_rect)
+        else:
+            # multi-line, top-left-ish
+            draw_wrapped_text(screen, content, x + 4, y + 4, max_width, font, (255, 255, 255))
     else:
         placeholder = font.render("Empty", True, (180, 180, 180))
         screen.blit(placeholder, (x + 8, y + h//2 - placeholder.get_height()//2))
     return rect
+
 
 
 def draw_wrapped_text(screen, text, x, y, max_width, font, color):
