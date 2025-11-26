@@ -19,9 +19,10 @@ class GameManager:
         self.back_button = Button("Back to Menu", 20, 20, 200, 50, self.small_font)
 
         # Scenes
-        # Scenes
         self.mixing_scene = MixingScene(screen, self.small_font)
         self.level_select_scene = LevelSelectScene(screen, self.small_font)
+        self.mixing_scene.on_level_complete = self._handle_level_complete
+
 
 
         # Load music
@@ -35,6 +36,9 @@ class GameManager:
 
         
 
+    def _handle_level_complete(self, level, retries):
+        self.level_select_scene.update_best_retry(level, retries)
+        self.level_select_scene.refresh()
 
     # ---------------- Event Handling ----------------
     def handle_event(self, event):

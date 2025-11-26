@@ -39,6 +39,8 @@ class MixingScene:
         self.objective = "Brew something magical!"
         self.level_complete_flag = False
         self.target_potion = None
+        self.on_level_complete = None
+
 
         # Retry counter
         self.retry_count = 0
@@ -92,6 +94,11 @@ class MixingScene:
             self.level_complete_flag = True
             self.sfx_success.play()
             self.notification.set(f"Level complete! Brewed {self.target_potion}!", 2.5)
+
+        from game.level_select_scene import LevelSelectScene  # safe import
+        # we need to use a callback.
+        if callable(self.on_level_complete):
+            self.on_level_complete(self.current_level, self.retry_count)
 
     # ---------------- Load Level ----------------
     def load_level(self, level_number):
@@ -244,8 +251,13 @@ class MixingScene:
         # Next level button
         if self.level_complete_flag and event.type == pygame.MOUSEBUTTONDOWN:
             if self.next_level_button.is_clicked(event):
+                # reset retries for the next level
+                self.retry_count = 0
+                # ALSO important: ensure no stale completion flag leaks over
+                self.level_complete_flag = False
                 self.load_level(self.current_level + 1)
                 return
+
 
     # ---------------- Popup Handling ----------------
     def _handle_popup_event(self, event):

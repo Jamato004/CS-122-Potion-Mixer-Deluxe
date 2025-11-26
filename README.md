@@ -15,6 +15,10 @@ pip install requirements.txt
 - little to no changes are needed to `main.py` as it's used to load assets and run the game
 
 # Changelog
+## 11/26 Changes
+- fixed all bugs mentioned in 11/15
+- `level_stats.json` is now updating once level completion.
+- want to lock levels so you must complete the previous level
 ## 11/25 Changes
 - levels are now being developed
     - 7 levels total
