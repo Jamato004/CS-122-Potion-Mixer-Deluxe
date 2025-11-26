@@ -91,59 +91,34 @@ pip install requirements.txt
 
 ---
 
-# TODO
-- data (Adding the csvs from the excel)
-    - ingredients.json list
-    - recipes.json list
-- game logic
-    - ingredient.py
-    - mixer.py
-    - potion.py
-- implementation (Missing: sprites, level select, options menu, win/lose screens)
-    - game_manager
-    - main.py
-
----
-
 # Project Structure
 ```
-CS-122-POTION-MIXER-DELUXE/  
-│  
-├── main.py                   # Entry point of the game  
-│  
-├── game/  
-│   ├── __init__.py  
-│   ├── game_manager.py       # Handles game states (menu, mixing, results)  
-│   ├── mixer.py              # Core logic: mixing ingredients, determining outcomes  
-│   ├── potion.py             # Potion class (name, color, effect)  
-│   ├── ingredient.py         # Ingredient class (name, property, color, etc.)  
-│   ├── ui.py                 # Handles buttons, text, and other GUI elements  
-│   └── assets_loader.py      # Loads images, sounds, fonts  
-│  
-├── assets/  
-│   ├── images/  
-│   │   ├── ingredients/      # Ingredient sprites  
-│   │   ├── potions/          # Potion result images  
-│   │   └── ui/               # Buttons, backgrounds  
-│   ├── sounds/  
-│   │   ├── background.ogg
-│   │   ├── mix.wav  
-│   │   └── success.wav  
-│   └── fonts/  
-│       └── MedievalSharp-Regular.ttf  
+CS-122-Potion-Mixer-Deluxe/
 │
-├── data/  
+├── main.py
+├── game/
+│   ├── game_manager.py
+│   ├── level_select_scene.py
+│   ├── mixing_scene.py
+│   ├── mixing_level.py
+│   ├── mixing_popup.py
+│   ├── ui.py
+│   ├── PotionMixerCommand.py
+│   ├── progress.py
+│   └── assets_loader.py
+│
+├── assets/
+│   ├── fonts/
+│   └── sounds/
+│
+├── data/
 │   ├── levels/
-│   │   ├── level1.json
-│   │   ├── level2.json
-│   │   └── level3.json
-│   ├── ingredients.json      # Ingredient definitions (e.g. {"herb": {"color": "green"}})  
-│   └── recipes.json          # Potion recipes and results  
-│  
-├── tests/  
-│   ├── test_mixer.py         # Unit tests for mixing logic  
-│   └── test_potion.py  
-│  
-├── requirements.txt          # Dependencies (e.g. pygame)  
-└── README.md                 # Setup instructions, description  
+│   ├── level_stats.json
+│   ├── Retort.csv
+│   ├── Calcinator.csv
+│   └── ...
+│
+├── requirements.txt
+└── README.md
+
 ```
