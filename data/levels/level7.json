@@ -3,10 +3,13 @@
   "objective": "Craft a Potion of Esoterica",
   "target_potion": "Potion of Esoterica",
   "ingredients": [
-  {"name": "", "category": "", "count": 5},
-  {"name": "", "category": "", "count": 3},
-  {"name": "", "category": "", "count": 5},
-  {"name": "", "category": "", "count": 2},
-  {"name": "", "category": "", "count": 3}
+  {"name": "Copper Ore", "category": "solid", "count": 2},
+  {"name": "Charcoal", "category": "solid", "count": 2},
+  {"name": "Zinc Dust", "category": "solid", "count": 2},
+  {"name": "Dragon Scale", "category": "solid", "count": 3},
+  {"name": "Skyglass", "category": "solid", "count": 3},
+  {"name": "Peony Dust", "category": "solid", "count": 1},
+  {"name": "Water", "category": "liquid", "count": 5},
+  {"name": "Golem Heart", "category": "solid", "count": 1}
 ]
 }
