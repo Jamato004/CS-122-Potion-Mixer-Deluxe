@@ -12,6 +12,7 @@ class LevelSelectScene:
         # Buttons and data
         self.level_buttons = []
         self.back_button = Button("Back", 20, 20, 120, 40, small_font)
+        self.reset_button = Button("Reset Stats", 20, 70, 200, 40, small_font)
 
         # put stats next to level JSONs
         self.stats_path = os.path.join("data", "level_stats.json")
@@ -84,11 +85,22 @@ class LevelSelectScene:
             y = start_y + row * row_height
             self.level_buttons.append(Button(label, x, y, 200, 50, self.small_font))
 
+    def reset_stats(self):
+        # Completely wipe stats
+        self.stats = {"levels": {}}
+        self._save_stats()
+        self._create_buttons()
+        print("Level stats reset!")
+
     # --- Event ---
     def handle_event(self, event, game_manager):
         if event.type == pygame.MOUSEBUTTONDOWN:
             if self.back_button.is_clicked(event):
                 game_manager.state = "menu"
+                return
+            
+            if self.reset_button.is_clicked(event):
+                self.reset_stats()
                 return
 
             for idx, btn in enumerate(self.level_buttons):
@@ -108,3 +120,4 @@ class LevelSelectScene:
             btn.draw(self.screen)
 
         self.back_button.draw(self.screen)
+        self.reset_button.draw(self.screen)

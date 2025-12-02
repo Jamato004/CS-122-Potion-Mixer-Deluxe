@@ -15,6 +15,9 @@ pip install requirements.txt
 - little to no changes are needed to `main.py` as it's used to load assets and run the game
 
 # Changelog
+## 12/1 Changes
+- added a reset progress button
+- removed the potions from the levels from testing
 ## 11/26 Changes
 - fixed all bugs mentioned in 11/25
 - `level_stats.json` is now updating once level completion.

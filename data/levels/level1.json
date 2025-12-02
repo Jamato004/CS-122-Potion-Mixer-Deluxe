@@ -6,8 +6,6 @@
   {"name": "Dragon Scale", "category": "solid", "count": 5},
   {"name": "Ethanol", "category": "liquid", "count": 3},
   {"name": "Manticore Honey", "category": "solid", "count": 5},
-  {"name": "Essence of Destruction", "category": "essence", "count": 2},
-  {"name": "Potion of Might", "category": "potion", "count": 5}
-
+  {"name": "Essence of Destruction", "category": "essence", "count": 2}
 ]
 }
