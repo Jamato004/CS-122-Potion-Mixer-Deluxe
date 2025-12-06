@@ -22,7 +22,9 @@ pip install requirements.txt
 2. Level 2
     - Mortar (Golem Heart) -> Anima Dust
     - Infuser (Anima Dust, Water) -> Serene Fluid
-    - Cauldron (Serene Fluid, Silicate Powder, Essence of Water) -> Potion of Waterbreathing
+    - Retort (Serene Fluid) -> Essence of Earth,Essence of Water
+    - Mortar (Black Pearl) -> Dark Silicate
+    - Cauldron (Serene Fluid, Dark Silicate, Essence of Water) -> Potion of Waterbreathing
 
 
 # Changelog
@@ -31,6 +33,7 @@ pip install requirements.txt
 - removed files and code that weren't used
 - fixed nan handling specifically for essences
 - changed retort's input to liquid as the potion input was due to miscommunication
+- fixing some errors with the recipes
 - created a .exe file so you can just run the application
 ## 12/1 Changes
 - added a reset progress button
