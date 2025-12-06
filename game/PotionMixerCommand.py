@@ -128,12 +128,11 @@ class Mixing:
         except Exception:
             return None
 
-    # NOTE: per UI rules, Retort takes a POTION-like input and yields essences
-    def Retort(self, inventory: Inventory, potion: str) -> str:
-        if not inventory.check_inventory(potion, "potions"):
+    def Retort(self, inventory: Inventory, fluid: str) -> str:
+        if not inventory.check_inventory(fluid, "fluids"):
             return "You don't have that potion."
-        inventory.remove_from_inventory(potion, "potions", 1)
-        recipe = self.retort_recipes[self.retort_recipes["Input"] == potion]
+        inventory.remove_from_inventory(fluid, "fluids", 1)
+        recipe = self.retort_recipes[self.retort_recipes["Input"] == fluid]
         if recipe.empty:
             return "The retort failed to produce anything..."
 
@@ -144,7 +143,7 @@ class Mixing:
                 inventory.add_to_inventory(out, "essences", 1)
                 outputs.append(out)
         clean_up(inventory)
-        return f"The retort produced {outputs} from {potion}!"
+        return f"The retort produced {outputs} from {fluid}!"
 
     def Mortar(self, inventory: Inventory, solid: str) -> str:
         if not inventory.check_inventory(solid, "solids"):

@@ -59,7 +59,7 @@ class MixingScene:
 
         # station slot rules per station: list of expected categories for each slot
         self.station_slot_requirements = {
-            "Retort": ["potion"],
+            "Retort": ["liquid"],
             "Mortar": ["solid"],
             "Calcinator": ["solid", "solid"],
             "Cauldron": ["liquid", "solid", "essence"],
@@ -175,6 +175,10 @@ class MixingScene:
         start_x, start_y = 60, 160
 
         for idx, (name, count) in enumerate(items):
+            # Skip weird keys like NaN or None
+            if not isinstance(name, str):
+                continue
+
             row = idx // max_per_row
             col = idx % max_per_row
             x = start_x + col * col_width
@@ -194,7 +198,7 @@ class MixingScene:
 
             label = f"{display} x{count}"
             btn = Button(label, x, y, 130, 48, self.small_font)
-            btn.meta_name = name  # keep full internal name here
+            btn.meta_name = name
             self.ingredient_buttons.append(btn)
 
 

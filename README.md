@@ -1,20 +1,37 @@
-# Install instruction
+# Instruction to run game
+## Option 1 (ngl this is my first time making a .exe so not sure if it'll work as intended)
 1. Download and extract the zip
-2. Install dependencies
+2. Run the application `dist/PotionMixer/PotionMixer.exe`
+
+## Option 2
+1. Download and extract the zip
+2. In your coding software of choice
+    - VS code
+    - Pycharm
+3. Install dependencies in the terminal
 ```
 pip install requirements.txt
 ```
-3. run `main.py`
+4. run `main.py`
 
-# Developer Notes
-- Game states are managed in `game_manager.py`
-- Add new screens or features by creating a new state (e.g., "results", "pause")
-- Ingredient and potion logic should go in their respective files under `game/`
-- Game logic to be implemented in `mixing_scene.py`
-- Any new data (recipes, ingredients) can be stored in `data/` as JSON
-- little to no changes are needed to `main.py` as it's used to load assets and run the game
+# Recepies for testing
+1. Level 1
+    - Mortor (Dragon Scale) -> Dragonscale Powder
+    - Infuser (Dragonscale Powder, Ethanol) -> Raging Mixture
+    - Cauldron (Raging Mixture, Manticore Honey, Essence of Destruction) -> Potion of Might
+2. Level 2
+    - Mortar (Golem Heart) -> Anima Dust
+    - Infuser (Anima Dust, Water) -> Serene Fluid
+    - Cauldron (Serene Fluid, Silicate Powder, Essence of Water) -> Potion of Waterbreathing
+
 
 # Changelog
+## 12/6 Changes
+- fixed bug where level stats saved when player mixed and not on level completion
+- removed files and code that weren't used
+- fixed nan handling specifically for essences
+- changed retort's input to liquid as the potion input was due to miscommunication
+- created a .exe file so you can just run the application
 ## 12/1 Changes
 - added a reset progress button
 - removed the potions from the levels from testing
@@ -107,7 +124,6 @@ CS-122-Potion-Mixer-Deluxe/
 │   ├── mixing_popup.py
 │   ├── ui.py
 │   ├── PotionMixerCommand.py
-│   ├── progress.py
 │   └── assets_loader.py
 │
 ├── assets/
