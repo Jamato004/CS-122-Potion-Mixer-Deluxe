@@ -57,13 +57,9 @@ class GameManager:
         elif self.state == "mixing":
             self.mixing_scene.handle_event(event)
             if self.back_button.is_clicked(event):
-                # Only save if the level was actually completed
-                if self.mixing_scene.level_complete_flag:
-                    lvl = self.mixing_scene.current_level
-                    retries = self.mixing_scene.retry_count
-                    self.level_select_scene.update_best_retry(lvl, retries)
                 self.state = "level_select"
             return
+
 
 
 

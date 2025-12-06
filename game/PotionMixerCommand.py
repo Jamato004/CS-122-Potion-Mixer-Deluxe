@@ -1,5 +1,5 @@
 import pandas as pd
-from typing import Dict, List, Optional, Tuple
+from typing import Dict, List, Tuple
 from collections import Counter
 
 class ReservedInventoryView:

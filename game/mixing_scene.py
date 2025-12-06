@@ -1,8 +1,6 @@
 import pygame
-import os
-import json
 from collections import Counter
-from game.ui import Button, Popup, Notification
+from game.ui import Button, Notification
 from game.assets_loader import load_font, load_sound
 from game.PotionMixerCommand import Inventory, Mixing, ReservedInventoryView
 from game.mixing_level import load_level_data, build_inventory_from_level
