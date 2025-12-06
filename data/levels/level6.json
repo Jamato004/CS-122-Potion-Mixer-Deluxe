@@ -3,7 +3,7 @@
   "objective": "Craft a Potion of Levitation",
   "target_potion": "Potion of Levitation",
   "ingredients": [
-  {"name": "Skyglass", "category": "solid", "count": 3},
+  {"name": "Sky Glass", "category": "solid", "count": 3},
   {"name": "Dragon Scale", "category": "solid", "count": 3},
   {"name": "Ethanol", "category": "liquid", "count": 5},
   {"name": "White Phosphorous", "category": "solid", "count": 5},
