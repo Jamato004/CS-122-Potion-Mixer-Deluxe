@@ -89,16 +89,20 @@ class MixingScene:
         """If target_potion is owned, mark level complete and celebrate once."""
         if not self.target_potion:
             return
+
         have = self.inventory.potions.get(self.target_potion, 0)
         if have > 0 and not self.level_complete_flag:
+            # mark level complete
             self.level_complete_flag = True
             self.sfx_success.play()
-            self.notification.set(f"Level complete! Brewed {self.target_potion}!", 2.5)
+            self.notification.set(
+                f"Level complete! Brewed {self.target_potion}!", 2.5
+            )
 
-        from game.level_select_scene import LevelSelectScene  # safe import
-        # we need to use a callback.
-        if callable(self.on_level_complete):
-            self.on_level_complete(self.current_level, self.retry_count)
+            # notify GameManager / LevelSelectScene
+            if callable(self.on_level_complete):
+                self.on_level_complete(self.current_level, self.retry_count)
+
 
     # ---------------- Load Level ----------------
     def load_level(self, level_number):
