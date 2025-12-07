@@ -2,6 +2,12 @@
   "levels": {
     "1": {
       "best_retries": 0
+    },
+    "2": {
+      "best_retries": 0
+    },
+    "3": {
+      "best_retries": 0
     }
   }
 }

@@ -139,9 +139,15 @@ class Mixing:
         outputs = []
         for col in ("Output1", "Output2", "Output3"):
             out = self._first(recipe, col)
-            if out and str(out) != "None":
-                inventory.add_to_inventory(out, "essences", 1)
-                outputs.append(out)
+
+            # Filter out NaN, None, empty, and the literal "None"
+            if not isinstance(out, str):
+                continue
+            if out.strip() == "" or out.strip().lower() == "none":
+                continue
+
+            inventory.add_to_inventory(out, "essences", 1)
+            outputs.append(out)
         clean_up(inventory)
         return f"The retort produced {outputs} from {fluid}!"
 
