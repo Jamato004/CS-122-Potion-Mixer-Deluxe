@@ -1,0 +1,11 @@
+{
+  "level": 1,
+  "objective": "Brew a Potion of Might",
+  "target_potion": "Potion of Might",
+  "ingredients": [
+  {"name": "Dragon Scale", "category": "solid", "count": 5},
+  {"name": "Ethanol", "category": "liquid", "count": 3},
+  {"name": "Manticore Honey", "category": "solid", "count": 5},
+  {"name": "Essence of Destruction", "category": "essence", "count": 2}
+]
+}

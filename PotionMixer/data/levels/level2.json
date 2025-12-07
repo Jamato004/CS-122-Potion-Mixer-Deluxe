@@ -1,0 +1,10 @@
+{
+  "level": 2,
+  "objective": "Make a Potion of Waterbreathing",
+  "target_potion": "Potion of Waterbreathing",
+  "ingredients": [
+  {"name": "Water", "category": "liquid", "count": 3},
+  {"name": "Golem Heart", "category": "solid", "count": 5},
+  {"name": "Black Pearl", "category": "solid", "count": 5}
+]
+}

@@ -1,0 +1,12 @@
+{
+  "level": 5,
+  "objective": "Craft a Potion of Soulburn",
+  "target_potion": "Potion of Soulburn",
+  "ingredients": [
+  {"name": "Ethanol", "category": "liquid", "count": 5},
+  {"name": "Golden Peony", "category": "solid", "count": 3},
+  {"name": "Bone", "category": "solid", "count": 5},
+  {"name": "Blade Coral", "category": "solid", "count": 2},
+  {"name": "Blood", "category": "liquid", "count": 3}
+]
+}

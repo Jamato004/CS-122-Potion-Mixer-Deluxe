@@ -1,0 +1,10 @@
+fonts/
+    https://fonts.google.com/specimen/MedievalSharp
+
+
+sounds/
+    backgorund.ogg - https://youtu.be/cJyPtpldb78?si=HzPvjb1kS575Bcln
+    success.wav - https://freesound.org/people/Kenneth_Cooney/sounds/779817/
+    mix.wav - https://freesound.org/people/Entagon/sounds/563727/
+    click.wav - https://freesound.org/people/moogy73/sounds/425728/
+    error.wav - https://freesound.org/people/copyc4t/sounds/235652/

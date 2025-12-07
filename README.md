@@ -1,11 +1,11 @@
 # Instruction to run game
 ## Option 1 (ngl this is my first time making a .exe so not sure if it'll work as intended)
 1. Download and extract the zip
-2. Run the application `dist/PotionMixer/PotionMixer.exe`
+2. Run the application `PotionMixer/PotionMixer.exe`
 
 ## Option 2
 1. Download and extract the zip
-2. In your coding software of choice
+2. Open the folder `CS-122-Potion-Mixer-Deluxe/` in your coding software of choice
     - VS code
     - Pycharm
 3. Install dependencies in the terminal
